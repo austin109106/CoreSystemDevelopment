@@ -1,1 +1,6 @@
-//resource header
+#ifndef RESOURCE_H
+#define RESOURCE_H
+
+using namespace std;
+
+Resource()
