@@ -1,8 +1,11 @@
 #include "Resource.h";
-#include "Reservation.h";
+#include "Reservations.h";
 
 #include <iostream>
+#include <fstream>
+
 using namespace std;
+
 
 int main() {
   int choice=9;
