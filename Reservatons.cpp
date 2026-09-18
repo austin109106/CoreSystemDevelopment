@@ -56,8 +56,8 @@ bool Reservations::operator>(const Reservations& other) const{
     return this->resNumber < other.resNumber;
 }
 
-void Reservations::display(){
-    string d = this->getDate();
+void Reservations::display() const {
+    string d  = this->getDate();
     cout << "|" << resNumber << "|" << studentID << "|" << name << "|R" << resourceNumber << "|" << d << "|";
 }
 
