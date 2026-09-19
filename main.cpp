@@ -1,38 +1,36 @@
-#include "Resource.h";
-#include "Reservation.h";
-#include <iostream>
-#include <queue>
-//#include <list>
+#include "Resource.h"
+#include "Reservations.h"
+// #include "ReservationList.h"
 
-#include <iostream>
+
+#include <queue>
+#include <cstdlib>
+
 using namespace std;
 
+
+
 int main() {
+
+  // ReservationList::loadFromFile("reservations.txt");
+  ResourceManager::loadFromFile("resources.txt");
+
+  
   int choice=9;
 
   while (choice!=9) {
     //Main User-Interface
-    cout<<"===== Campus Resource Reservation System =====\n\n
-      1. View Resources\n
-      2. Create Reservation\n
-      3. Cancel Reservation\n
-      4. View Waiting Lists\n
-      5. Undo Cancellation\n
-      6. Search Reservations\n
-      7. Sort Resources\n
-      8. Generate Report\n
-      9. Exit\n\n
-      Enter Choice: ";
+    cout<<"===== Campus Resource Reservation System =====\n\n1. View Resources\n2. Create Reservation\n3. Cancel Reservation\n4. View Waiting Lists\n5. Undo Cancellation\n6. Search Reservations\n7. Sort Resources\n8. Generate Report\n9. Exit\n\nEnter Choice: ";
       cin>>choice;
 
     //VIEW RESOURCES
     if (choice==1) {
-
+      ResourceManager::displayAllResources();
     }
     
     //CREATE RESERVATION
     else if (choice==2) {
-
+      
     }
     
     //CANCEL RESERVATION
@@ -66,6 +64,7 @@ int main() {
     }
 
   }
+
 cout<<"Exited Program.\n";
   return 0;
 }
