@@ -41,7 +41,7 @@ class Reservations {
         bool operator<(const Reservations& other) const;
 
         //print
-        void display();
+        void display() const;
 
 };
 
