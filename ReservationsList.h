@@ -21,7 +21,7 @@ public:
     ReservationsList();
     ~ReservationsList();    //dynamic value needs to be deleted
 
-    ReservationsList(const ReservationsList) = delete; // ensures no doubleing
+    ReservationsList(const ReservationsList&) = delete; // ensures no doubleing
     ReservationsList& operator=(const ReservationsList&) = delete;
     
     
