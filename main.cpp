@@ -33,6 +33,45 @@ void printMostPopular(const ReservationsList& reservations, const ResourceManage
     }
 }
 
+//SORT FUNCTIONS
+bool comesBefore(const Resource& a, const Resource& b, int fieldChoice) {
+    if (fieldChoice==1) {
+        return a.getName()<b.getName();
+    } else if (fieldChoice==2) {
+        return a.getType()<b.getType();
+    } else if (fieldChoice==3) {
+        return a.isAvailable()<b.isAvailable();
+    } else if (fieldChoice==4) {
+        return a.getResourceNumber()<b.getResourceNumber();
+    } else {
+        cout<<"Not a valid number.\n";
+        return false;
+    }
+}
+
+int partition(vector<Resource>& v, int low, int high, int fieldChoice) {
+    Resource pivot = v[high];
+    int i = low-1;
+    for (int j=low; j<high; j++) {
+        if (comesBefore(v[j], pivot, fieldChoice)) {
+            i++;
+            swap(v[i], v[j]);
+        }
+    }
+    swap(v[i+1], v[high]);
+    return i + 1;
+}
+
+void quickSort(vector<Resource>& v, int low, int high, int fieldChoice) {
+    if (low>=high) {
+        return;
+    } else {
+        int pivotIndex = partition(v, low, high, fieldChoice);
+        quickSort(v, low, pivotIndex-1, fieldChoice);
+        quickSort(v, pivotIndex+1, high, fieldChoice);
+    }
+}
+
 int main() {
   
   ResourceManager rm;
@@ -209,7 +248,20 @@ int main() {
 
     //SORT RESOURCES
     else if (choice==7) {
-
+      vector<Resource> toSort = rm.getAllResources();
+      cout<<"How do you want to sort:\n1) By Name\n2) By Type\n3) By Availability\n4) By Resource Num\nEnter Here: ";
+      int y;
+      cin>>y;
+      
+      if (y!=1&&y!=2&&y!=3&&y!=4) {
+          cout<<"Not a valid choice.\n";
+      } else {
+          quickSort(toSort, 0, toSort.size() -1, y);
+          for (int i = 0; i < toSort.size(); i++) {
+              toSort.at(i).display();
+              
+          }
+      }
     }
 
     //GENERATE REPORT
