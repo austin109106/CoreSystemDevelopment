@@ -47,8 +47,6 @@ class ResourceManager {
         int getAvailableResources();
         void displayAvailableResources() const;
 
-        int countForResource(int resourceNum) const;//gets a count of the resources
-
         size_t getResourceCount() const;
         const vector<Resource>& getAllResources() const;
 };
