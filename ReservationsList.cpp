@@ -7,7 +7,8 @@ ReservationsList::~ReservationsList(){
     clear();
 }//dynamic value needs to be deleted
 
-const Reservations* search(int resNumber) const {
+//Seach by Resouce Number
+const Reservations* ReservationsList::searchbyRes(int resNumber) const {
     for(Node* cur = head; cur != nullptr; cur = cur->next){
         if(cur->data.getReservationNumber() == resNumber){
             return &cur->data;
@@ -16,7 +17,18 @@ const Reservations* search(int resNumber) const {
     return nullptr;
 } //nullptr if not found
 
-bool cancel(int resNumber){
+//Search by Student ID
+vector<Reservations> ReservationsList::searchbySID(int SID) const {
+    vector<Reservations> r;
+    for(Node* cur = head; cur != nullptr; cur = cur->next){
+        if(cur->data.getStudentID() == SID){
+            r.push_back(cur->data);
+        }
+    }
+    return r;
+}
+
+bool ReservationsList::cancel(int resNumber){
     Node* prev = nullptr;
     Node* cur = head;
 
