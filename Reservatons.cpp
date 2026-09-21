@@ -68,7 +68,7 @@ ostream& operator<<(ostream& out, const Reservations& r){
     return out;
 }
 
-istream& operator>>(istream& in, Reservations r){
+istream& operator>>(istream& in, Reservations& r){
     string res, line;
     if(!getline(in, line)){
         return in;
