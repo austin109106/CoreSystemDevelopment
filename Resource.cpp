@@ -117,6 +117,31 @@ void ResourceManager::displayAvailableResources() const{
     }
     cout << endl<< endl;
 }
+
+int ReservationsList::countForResource(int resourceNum) const {
+    int total = 0;
+    for (Node* cur = head; cur != nullptr; cur = cur->next) {
+        if (cur->data.getResourceNumber() == resourceNum) {
+            total++;
+        }
+    }
+    return total;
+}
+
+int ResourceManager::getAvailableResources() {
+    bool found = false;
+    int count = 0;
+    for(size_t i = 0; i < resources.size(); ++i){
+        if(resources[i].isAvailable()){
+            found = true;
+            count++;
+        }
+    }
+    if(!found){
+        return 0;
+    } else return count;
+}
+
 size_t ResourceManager::getResourceCount() const{
     return resources.size();
 }

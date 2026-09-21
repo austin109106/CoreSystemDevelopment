@@ -44,7 +44,10 @@ class ResourceManager {
         bool updateAvailability(int resourceNum, bool status);
         // display methods
         void displayAllResources() const;
+        int getAvailableResources();
         void displayAvailableResources() const;
+
+        int countForResource(int resourceNum) const;//gets a count of the resources
 
         size_t getResourceCount() const;
         const vector<Resource>& getAllResources() const;

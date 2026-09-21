@@ -10,6 +10,28 @@
 using namespace std;
 
 
+void printMostPopular(const ReservationsList& reservations, const ResourceManager& manager) { // gets the most popular resource use
+    const vector<Resource>& all = manager.getAllResources();
+
+    int bestIndex = -1;
+    int bestCount = 0;
+
+    for (size_t i = 0; i < all.size(); ++i) {
+        int c = reservations.countForResource(all[i].getResourceNumber());
+        if (c > bestCount) {
+            bestCount = c;
+            bestIndex = i;
+        }
+    }
+
+    if (bestIndex == -1) {
+        cout << "No reservations yet." << endl;
+    } else {
+        cout << "Most popular: " << all[bestIndex].getName()
+             << " (" << all[bestIndex].getId() << ") with "
+             << bestCount << " reservations" << endl;
+    }
+}
 
 int main() {
   
@@ -192,7 +214,14 @@ int main() {
 
     //GENERATE REPORT
     else if (choice==8) {
-
+        /*Most frequently reserved resources
+        Current availability
+        Number of active reservations
+        Waiting list reports*/
+        printMostPopular(rl, rm);
+        cout << "Current availability " << rm.getAvailableResources() << endl;
+        cout << "Number of active reservations: " << rl.size(); << endl;
+        cout << "waiting list report" << wl.displayWL() << endl;
     }
 
   }
