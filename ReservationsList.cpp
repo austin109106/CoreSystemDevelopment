@@ -28,14 +28,14 @@ vector<Reservations> ReservationsList::searchbySID(int SID) const {
     return r;
 }
 
-int ReservationsList::countForResource(int resNumber) const {
-    int r=0;
-    for(Node* cur = head; cur != nullptr; cur = cur->next) {
-        if (cur->data.getResourceNumber() == resNumber) {
-            r++;
+int ReservationsList::countForResource(int resourceNum) const {
+    int total = 0;
+    for (Node* cur = head; cur != nullptr; cur = cur->next) {
+        if (cur->data.getResourceNumber() == resourceNum) {
+            total++;
         }
     }
-    return r;
+    return total;
 }
 
 
