@@ -30,6 +30,8 @@ public:
 
     vector<Reservations> searchbySID(int SID) const; //searches the list by StudentID
 
+    int countForResource(int resNumber) const;
+
     bool cancel(int resNumber); //false if not found and cancel
     
     void add(const Reservations& r); //add a reservation to the list
