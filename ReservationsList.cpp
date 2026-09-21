@@ -7,6 +7,38 @@ ReservationsList::~ReservationsList(){
     clear();
 }//dynamic value needs to be deleted
 
+const Reservations* search(int resNumber) const {
+    for(Node* cur = head; cur != nullptr; cur = cur->next){
+        if(cur->data.getReservationNumber() == resNumber){
+            return &cur->data;
+        }
+    }
+    return nullptr;
+} //nullptr if not found
+
+bool cancel(int resNumber){
+    Node* prev = nullptr;
+    Node* cur = head;
+
+    while(cur != nullptr){
+        if(cur->data.getReservationNumber() == resNumber){
+            if(prev == nullptr){ //kills the head
+                head = cur->next;
+            } else prev->next = cur->next;
+
+            if(cur == tail){ //kills tail
+                tail = prev;
+            }
+            delete cur;
+            count--;
+            return true;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+    return false;
+} //false if not found
+
 void ReservationsList::add(const Reservations& r) {
     Node* n = new Node(r);
     if (head == nullptr) {
