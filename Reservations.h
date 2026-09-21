@@ -44,7 +44,7 @@ class Reservations {
         bool operator<(const Reservations& other) const;//overloads the < operand, when comparing Reservations it will compare by their Reservation number
 
         friend ostream& operator<<(ostream& out, const Reservations& r);//how to print a Reservation
-        friend istream& operator>>(istream& in, Reservations r);//how to read a Reservation
+        friend istream& operator>>(istream& in, Reservations& r);//how to read a Reservation
 
         //print
         void display() const; //obsoliet cant be printed normally now
