@@ -271,9 +271,11 @@ int main() {
         Number of active reservations
         Waiting list reports*/
         printMostPopular(rl, rm);
-        cout << "Current availability " << rm.getAvailableResources() << endl;
-        cout << "Number of active reservations: " << rl.size(); << endl;
-        cout << "waiting list report" << wl.displayWL() << endl;
+        cout << "Current availability " << endl;
+        rm.displayAvailableResources();
+        cout << "Number of active reservations: " << rl.size() << endl;
+        cout << "Waiting List report" << endl;
+        wl.displayWL();
     }
 
   }
