@@ -131,7 +131,35 @@ int main() {
 
     //SEARCH RESERVATIONS
     else if (choice==6) {
-
+      int x;
+      cout<<"How to search? (1 for by Reservation ID, 2 for by Student ID) ";
+      cin>>x;
+      if (x==1) {
+          int s1;
+          cout<<"Enter Reservation Number: ";
+          cin>>s1;
+          const Reservations* result = rl.searchbyRes(s1);
+          if (result==nullptr) {
+              cout<<"This reservation does not exist.\n";
+          } else {
+              cout<<"Found! Here it is:\n"<<*result<<endl;
+          }
+      } else if (x==2) {
+          int s2;
+          cout<<"Enter Student ID: ";
+          cin>>s2;
+          vector<Reservations> results = rl.searchbySID(s2);
+          if (results.empty()) {
+              cout<<"This student's reservations cannot be found.\n";
+          } else {
+              cout<<"Found! Here it is:\n";
+              for (int i = 0; i<results.size(); i++) {
+                cout<<results.at(i)<<endl;  
+              }
+          }
+      } else {
+          cout<<"Not a valid number.\n";
+      }
     }
 
     //SORT RESOURCES
