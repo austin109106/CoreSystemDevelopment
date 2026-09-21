@@ -118,15 +118,6 @@ void ResourceManager::displayAvailableResources() const{
     cout << endl<< endl;
 }
 
-int ReservationsList::countForResource(int resourceNum) const {
-    int total = 0;
-    for (Node* cur = head; cur != nullptr; cur = cur->next) {
-        if (cur->data.getResourceNumber() == resourceNum) {
-            total++;
-        }
-    }
-    return total;
-}
 
 int ResourceManager::getAvailableResources() {
     bool found = false;
