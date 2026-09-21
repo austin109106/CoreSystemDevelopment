@@ -4,6 +4,8 @@
 
 #include "Reservations.h"
 
+#include <vector>
+
 class ReservationsList {
 private:
     struct Node {
@@ -24,7 +26,9 @@ public:
     ReservationsList(const ReservationsList&) = delete; // ensures no doubleing
     ReservationsList& operator=(const ReservationsList&) = delete;
     
-    const Reservations* search(int resNumber) const; //nullptr if not found
+    const Reservations* searchbyRes(int resNumber) const; //nullptr if not found
+
+    vector<Reservations> searchbySID(int SID) const;
 
     bool cancel(int resNumber); //false if not found
     
