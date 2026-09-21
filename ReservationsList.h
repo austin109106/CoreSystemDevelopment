@@ -24,12 +24,20 @@ public:
     ReservationsList(const ReservationsList&) = delete; // ensures no doubleing
     ReservationsList& operator=(const ReservationsList&) = delete;
     
+    const Reservations* search(int resNumber) const; //nullptr if not found
+
+    bool cancel(int resNumber); //false if not found
     
-    void add(const Reservations& r); 
+    void add(const Reservations& r);
+
     bool loadFromFile(const string& filename);
+    
     void display() const;
+    
     void printEarliest() const;
+    
     int size() const;
+    
     void clear();
 
 };
