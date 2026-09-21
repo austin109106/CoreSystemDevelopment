@@ -1,7 +1,7 @@
 #include "Resource.h"
 #include "Reservations.h"
 #include "ReservationsList.h"
-// #include WaitingList.h"
+#include "WaitingList.h"
 
 #include <stack>
 #include <queue>
@@ -15,6 +15,9 @@ int main() {
   
   ResourceManager rm;
   ReservationsList rl;
+  WaitingList wl;
+  stack<Reservations> cancelHis;
+
   rl.loadFromFile("reservations.txt");
   rm.loadFromFile("resources.txt");
   
@@ -22,8 +25,6 @@ int main() {
   
   int choice=0;
   int nextResNumber=321; //for counting incoming reservations
-  stack<Reservations> cancelHis;
-//   queue<
 
   while (choice!=9) {
     //Main User-Interface
@@ -50,7 +51,17 @@ int main() {
       }
       //check to see if resource is available
       else if (!res->isAvailable()) {
-          cout<<res->getName()<<" is currently unavailable.\n";
+          int studentID;
+          string name;
+          cout<<res->getName()<<" is currently unavailable. You will be added to the waitlist.\nEnter Student ID: ";
+          cin>>studentID;
+          cout<<"Enter Name: ";
+          cin.ignore(); //for incoming getline
+          getline(cin, name);
+          
+          wl.addtoWL(studentID, name, res->getResourceNumber());
+          
+          cout<<"Added to the waitlist. Type '4' at the menu to view Waiting List.\n";
           
       } else {
           int studentID;
@@ -90,13 +101,24 @@ int main() {
           cout<<"Reservation Not Found.\n";
       } else {
           int freeResNum = sRes->getResourceNumber();
+          int fRNDay = sRes->getDay();
+          int fRNMonth = sRes->getMonth();
+          int fRNYear = sRes->getYear();
           cancelHis.push(*sRes);
           rl.cancel(reservationID);
           rm.updateAvailability(freeResNum, true);
           cout<<"Reservation has been cancelled.\n";
-        /*   if (!WaitingList::isEmpty(freeResNum)) {
-            //pop them and auto create their reservation
-        }*/
+          
+          if (!wl.isEmpty(freeResNum)) {
+            //   pop them and auto create their reservation
+            WaitingList::Entry e = wl.removefromWL(freeResNum);
+            
+            Reservations WLr = Reservations(nextResNumber, e.studentID, e.name, freeResNum, fRNDay, fRNMonth, fRNYear);
+            rl.add(WLr);
+            rm.updateAvailability(freeResNum, false);
+            nextResNumber++;
+            cout<<"Waitlisted Reservation moved up to cancelled Reservation's date.\n";
+        }
           
       }
       
@@ -105,7 +127,7 @@ int main() {
     
     //VIEW WAITING LISTS
     else if (choice==4) {
-        
+        wl.displayWL();
     }
     
     //UNDO CANCELLATION
@@ -124,6 +146,7 @@ int main() {
               cout<<"Reservation "<<restoreRes<<" has been added back.\n";
           } else {
               //call waiting list add to wl back of queue
+              wl.addtoWL(restoreRes.getStudentID(), restoreRes.getName(), restoreRes.getResourceNumber());
               cout<<"Resource is currently unavilable now. You've been added to the waiting list.\n";
           }
       }
