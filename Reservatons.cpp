@@ -43,7 +43,7 @@ int Reservations::getDay() const { return day; }
 int Reservations::getMonth() const { return month; }
 int Reservations::getYear() const { return year; }
 
-string Reservations::getDate(){
+string Reservations::getDate() const {
     ostringstream oss;
     oss << setfill('0') << setw(2) << month << '/' << setw(2) << day << '/' << year;
     return oss.str();
@@ -69,7 +69,7 @@ ostream& operator<<(ostream& out, const Reservations& r){
 }
 
 istream& operator>>(istream& in, Reservations r){
-    string res;
+    string res, line;
     if(!getline(in, line)){
         return in;
     }
