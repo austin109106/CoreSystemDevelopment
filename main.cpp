@@ -1,6 +1,7 @@
 #include "Resource.h"
 #include "Reservations.h"
 #include "ReservationsList.h"
+// #include WaitingList.h"
 
 #include <stack>
 #include <queue>
@@ -22,6 +23,7 @@ int main() {
   int choice=0;
   int nextResNumber=321; //for counting incoming reservations
   stack<Reservations> cancelHis;
+//   queue<
 
   while (choice!=9) {
     //Main User-Interface
@@ -82,17 +84,49 @@ int main() {
       cout<<"Enter Reservation ID: ";
       cin>>reservationID;
       
+      const Reservations* sRes = rl.searchbyRes(reservationID);
+      
+      if (sRes==nullptr) {
+          cout<<"Reservation Not Found.\n";
+      } else {
+          int freeResNum = sRes->getResourceNumber();
+          cancelHis.push(*sRes);
+          rl.cancel(reservationID);
+          rm.updateAvailability(freeResNum, true);
+          cout<<"Reservation has been cancelled.\n";
+        /*   if (!WaitingList::isEmpty(freeResNum)) {
+            //pop them and auto create their reservation
+        }*/
+          
+      }
+      
       
     }
     
     //VIEW WAITING LISTS
     else if (choice==4) {
-
+        
     }
     
-    //UNDO CACELLATION
+    //UNDO CANCELLATION
     else if (choice==5) {
-
+      if (cancelHis.empty()) {
+          cout<<"No cancellations to undo.\n";
+      } else {
+          Reservations restoreRes = cancelHis.top();
+          cancelHis.pop();
+          Resource* r = rm.findByNumber(restoreRes.getResourceNumber());
+          if (r==nullptr) {
+              cout<<"Doesn't exist for some reason.\n";
+          } else if (r->isAvailable()) {
+              rl.add(restoreRes);
+              rm.updateAvailability(restoreRes.getResourceNumber(), false);
+              cout<<"Reservation "<<restoreRes<<" has been added back.\n";
+          } else {
+              //call waiting list add to wl back of queue
+              cout<<"Resource is currently unavilable now. You've been added to the waiting list.\n";
+          }
+      }
     }
 
     //SEARCH RESERVATIONS
