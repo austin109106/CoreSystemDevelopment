@@ -33,7 +33,7 @@ void printMostPopular(const ReservationsList& reservations, const ResourceManage
     }
 }
 
-//SORT FUNCTIONS
+//QUICKSORT FUNCTIONS
 bool comesBefore(const Resource& a, const Resource& b, int fieldChoice) {
     if (fieldChoice==1) {
         return a.getName()<b.getName();
