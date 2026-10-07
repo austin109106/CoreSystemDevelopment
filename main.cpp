@@ -153,7 +153,7 @@ int main() {
     else if (choice==3) {
       int reservationID;
       
-      cout<<"Enter Reservation ID: ";
+      cout<<"Enter Reservation ID: (this shouldn't have an 'R')";
       cin>>reservationID;
       
       const Reservations* sRes = rl.searchbyRes(reservationID);
