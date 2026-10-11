@@ -1,0 +1,14 @@
+#ignoring files that are executables, objects, IDE's, and OS.
+program
+*.exe
+*.out
+*.app
+#objects
+*.o
+*.obj
+#IDE's
+.vscode/
+.idea/
+#OS's
+.DS_Store
+Thumbs.db
