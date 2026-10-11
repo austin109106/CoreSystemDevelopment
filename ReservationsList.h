@@ -32,6 +32,8 @@ public:
 
     int countForResource(int resNumber) const;
 
+    vector<Reservations> getAll() const; //returns all reservations
+
     bool cancel(int resNumber); //false if not found and cancel
     
     void add(const Reservations& r); //add a reservation to the list

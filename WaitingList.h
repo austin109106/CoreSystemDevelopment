@@ -21,15 +21,15 @@ class WaitingList{
         
         void displayWL() const;
         
-        void addtoWL(int SID, string n, int RID);
+        void addtoWL(int SID, string n, int RID, int date);
         
-        Entry removefromWL(int resourceID);
+        Entry removefromWL(int resourceID, int date);
         
-        bool isEmpty(int resourceID);
+        bool isEmpty(int resourceID, int date);
         
     private:
-        //queue for waiting list
-        map<int, queue<Entry>> waitinglist;
+        //map and queue for waiting list
+        map<pair<int, int>, queue<Entry>> waitinglist;
         
     
 };

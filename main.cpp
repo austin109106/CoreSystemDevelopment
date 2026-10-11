@@ -9,6 +9,21 @@
 
 using namespace std;
 
+//Puts date together as a code
+int date(int d, int m, int y) {
+    return (y*10000)+(m*100)+d;
+}
+
+//Checks if ResourceNum matches with Date
+bool isReserved(const ReservationsList& r1, int resourceNum, int d, int m, int y) {
+    vector<Reservations> all = r1.getAll();
+    for (size_t i = 0; i < all.size(); i++) {
+        if (all[i].getResourceNumber() == resourceNum && all[i].getDay() == d&& all[i].getMonth() == m && all[i].getYear() == y) {
+            return true;
+        }
+    }
+    return false;
+}
 
 void printMostPopular(const ReservationsList& reservations, const ResourceManager& manager) { // gets the most popular resource use
     const vector<Resource>& all = manager.getAllResources();
@@ -27,9 +42,9 @@ void printMostPopular(const ReservationsList& reservations, const ResourceManage
     if (bestIndex == -1) {
         cout << "No reservations yet." << endl;
     } else {
-        cout << "Most popular: " << all[bestIndex].getName()
+        cout << "Most popular Resource: " << all[bestIndex].getName()
              << " (" << all[bestIndex].getId() << ") with "
-             << bestCount << " reservations" << endl;
+             << bestCount << " reservations." << endl;
     }
 }
 
@@ -109,51 +124,40 @@ int main() {
       Resource* res = rm.findById(resourceID);
       if (res == nullptr) {
           cout<<"No resource found with Resource ID "<<resourceID<<endl;
-      }
-      //check to see if resource is available
-      else if (!res->isAvailable()) {
-          int studentID;
-          string name;
-          cout<<res->getName()<<" is currently unavailable. You will be added to the waitlist.\nEnter Student ID: ";
-          cin>>studentID;
-          cout<<"Enter Name: ";
-          cin.ignore(); //for incoming getline
-          getline(cin, name);
-          
-          wl.addtoWL(studentID, name, res->getResourceNumber());
-          
-          cout<<"Added to the waitlist. Type '4' at the menu to view Waiting List.\n";
-          
       } else {
-          int studentID;
-          cout<<"Enter Student ID: ";
-          cin>>studentID;
-          
-          string name;
-          cout<<"Enter Name: ";
-          cin.ignore(); //to make sure incoming getline() works consistently
-          getline(cin, name);
-          
-          int month, day, year;
-          cout<<"Enter Date for Reservation (MM DD YYYY): ";
-          cin>>month>>day>>year;
-          
-          Reservations newRes(nextResNumber, studentID, name, res->getResourceNumber(), day, month, year);
-          
-          rl.add(newRes);
-          rm.updateAvailability(res->getResourceNumber(), false);
-          
-          cout<<"\nReservation created.\n";
-          nextResNumber++; //for next reservations
+        int month,day,year;
+        cout<<"Enter Date for Reservation (mm dd yyyy): ";
+        cin>>month>>day>>year;
+
+        int studentID;
+        cout<<"Enter Student ID: ";
+        cin>>studentID;  
+        string name;
+        cout<<"Enter Name: ";
+        cin.ignore(); //to make sure incoming getline() works consistently
+        getline(cin, name);
+
+        int rNum = res->getResourceNumber();
+
+        if (isReserved(rl,rNum,day,month,year)) {
+            cout<<res->getName()<<" is already reserved on that date. You will be added to the waitlist.\n";
+            wl.addtoWL(studentID,name,rNum,date(day,month,year));
+        } else {
+            Reservations newRes(nextResNumber,studentID,name,rNum,day,month,year);
+            rl.add(newRes);
+            cout<<"\nReservation created.\n";
+            nextResNumber++;
+        }
       }
-      
     }
     
     //CANCEL RESERVATION
     else if (choice==3) {
       int reservationID;
+      cout<<"\nCurrent Reservations:\n";
+      rl.display();
       
-      cout<<"Enter Reservation ID: (this shouldn't have an 'R')";
+      cout<<"\nEnter Reservation ID(should be the first number): ";
       cin>>reservationID;
       
       const Reservations* sRes = rl.searchbyRes(reservationID);
@@ -167,23 +171,18 @@ int main() {
           int fRNYear = sRes->getYear();
           cancelHis.push(*sRes);
           rl.cancel(reservationID);
-          rm.updateAvailability(freeResNum, true);
           cout<<"Reservation has been cancelled.\n";
           
-          if (!wl.isEmpty(freeResNum)) {
+          int dateNum = date(fRNDay, fRNMonth, fRNYear);
+          if (!wl.isEmpty(freeResNum,dateNum)) {
             //   pop them and auto create their reservation
-            WaitingList::Entry e = wl.removefromWL(freeResNum);
-            
+            WaitingList::Entry e = wl.removefromWL(freeResNum, dateNum);
             Reservations WLr = Reservations(nextResNumber, e.studentID, e.name, freeResNum, fRNDay, fRNMonth, fRNYear);
             rl.add(WLr);
-            rm.updateAvailability(freeResNum, false);
             nextResNumber++;
             cout<<"Waitlisted Reservation moved up to cancelled Reservation's date.\n";
-        }
-          
-      }
-      
-      
+        }   
+      }   
     }
     
     //VIEW WAITING LISTS
@@ -198,17 +197,19 @@ int main() {
       } else {
           Reservations restoreRes = cancelHis.top();
           cancelHis.pop();
-          Resource* r = rm.findByNumber(restoreRes.getResourceNumber());
-          if (r==nullptr) {
-              cout<<"Doesn't exist for some reason.\n";
-          } else if (r->isAvailable()) {
+
+          int rNum = restoreRes.getResourceNumber();
+          int d = restoreRes.getDay();
+          int m = restoreRes.getMonth();
+          int y = restoreRes.getYear();
+
+          if (!isReserved(rl,rNum,d,m,y)) { 
               rl.add(restoreRes);
-              rm.updateAvailability(restoreRes.getResourceNumber(), false);
               cout<<"Reservation "<<restoreRes<<" has been added back.\n";
           } else {
               //call waiting list add to wl back of queue
-              wl.addtoWL(restoreRes.getStudentID(), restoreRes.getName(), restoreRes.getResourceNumber());
-              cout<<"Resource is currently unavilable now. You've been added to the waiting list.\n";
+              wl.addtoWL(restoreRes.getStudentID(), restoreRes.getName(), rNum, date(d,m,y));
+              cout<<"Resource is unavilable at that time. You've been added to the waiting list.\n";
           }
       }
     }
@@ -249,7 +250,7 @@ int main() {
     //SORT RESOURCES
     else if (choice==7) {
       vector<Resource> toSort = rm.getAllResources();
-      cout<<"How do you want to sort:\n1) By Name\n2) By Type\n3) By Availability\n4) By Resource Num\nEnter Here: ";
+      cout<<"\nHow do you want to sort:\n1) By Name\n2) By Type\n3) By Availability\n4) By ResourceID\n\nEnter Here: ";
       int y;
       cin>>y;
       
@@ -271,10 +272,10 @@ int main() {
         Number of active reservations
         Waiting list reports*/
         printMostPopular(rl, rm);
-        cout << "Current availability " << endl;
+        cout << "\nCurrent availability:" << endl;
         rm.displayAvailableResources();
         cout << "Number of active reservations: " << rl.size() << endl;
-        cout << "Waiting List report" << endl;
+        cout << "\nWaiting List Report:" << endl;
         wl.displayWL();
     }
 

@@ -38,6 +38,13 @@ int ReservationsList::countForResource(int resourceNum) const {
     return total;
 }
 
+vector<Reservations> ReservationsList::getAll() const {
+    vector<Reservations> all;
+    for (Node* cur = head; cur != nullptr; cur = cur->next) {
+        all.push_back(cur->data);
+    }
+    return all;
+}
 
 bool ReservationsList::cancel(int resNumber){
     Node* prev = nullptr;
@@ -87,6 +94,7 @@ bool ReservationsList::loadFromFile(const string& filename){
 }
 
 void ReservationsList::display() const{
+    cout<<"ReservationID|StudentID|Name|ResourceID|Date\n";
     for(Node* cur = head; cur != nullptr; cur = cur->next){
         cout << cur->data  << endl; 
     }

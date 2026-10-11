@@ -103,7 +103,7 @@ void ResourceManager::displayAllResources() const {
     cout << "\n\n";
 }
 void ResourceManager::displayAvailableResources() const{
-    cout << endl << "ID\t | Name\t | Type\t | Status\t " << endl;
+    cout << endl << "ID\t | Name\t | Type\t | Status\t ";
     cout << "\n\n";
     bool found = false;
     for(size_t i = 0; i < resources.size(); ++i){
