@@ -4,7 +4,7 @@ WaitingList::WaitingList() {
 }
 
 void WaitingList::displayWL() const {
-    if (waitinglist.empty) {
+    if (waitinglist.empty()) {
         cout<<"The waitlist is currently empty.\n";
     } else {
         for (auto it = waitinglist.begin(); it!=waitinglist.end(); ++it) {
