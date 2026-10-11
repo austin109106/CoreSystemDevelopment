@@ -79,7 +79,17 @@ austin -
 
 
 Eddie - 
+ Resource h holds the declarations
+ holds string id, resource number, name, type,, and availability status.
+ has the declarations for the constructors, getters, setters, and the display method
+ ResourceManager class stores the objects inside the resource vector. also has the file loading, availibility, and display.
+ Resource cpp holds the functions logic 
+ the constructors will use the inputs and create new resource objects and also handle misinputs with the try catch method
+ implemented loadFromFile to read the file line by line in order to display the text from the file
+ The search method uses the string ID or the resource number to update availability, generate a report, or all available resources.
+ 
 
-
+ 
+ 
 Payton -
 
