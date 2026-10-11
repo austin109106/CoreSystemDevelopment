@@ -4,12 +4,16 @@ WaitingList::WaitingList() {
 }
 
 void WaitingList::displayWL() const {
-    for (auto it = waitinglist.begin(); it!=waitinglist.end(); ++it) {
-        queue<Entry> temp = it->second;
-        while (!temp.empty()) {
-            Entry e = temp.front();
-            cout<<"Student ID: "<<e.studentID<<"\nStudent Name: "<<e.name<<"\nResource ID: "<<e.resourceID<<endl<<endl;
-            temp.pop();
+    if (waitinglist.empty) {
+        cout<<"The waitlist is currently empty.\n";
+    } else {
+        for (auto it = waitinglist.begin(); it!=waitinglist.end(); ++it) {
+            queue<Entry> temp = it->second;
+            while (!temp.empty()) {
+                Entry e = temp.front();
+                cout<<"Student ID: "<<e.studentID<<"\nStudent Name: "<<e.name<<"\nResource ID: "<<e.resourceID<<endl<<endl;
+                temp.pop();
+            }
         }
     }
 }
