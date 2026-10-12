@@ -88,8 +88,9 @@ Eddie -
  implemented loadFromFile to read the file line by line in order to display the text from the file
  The search method uses the string ID or the resource number to update availability, generate a report, or all available resources.
  
-
- 
  
 Payton -
+ main.cpp partition, comes before, and quick sort functions, also implemented menu interface and choices view resources, create reservation, cancel reservation, view waitlist, undo cancellation, search reservations, and sort resources
+ Waitlist.h/.cpp created and implemented displayWL, addtoWL, removefromWL, isEmpty, and the multikeyed map with a queue for the Waitlist
+ 
 
